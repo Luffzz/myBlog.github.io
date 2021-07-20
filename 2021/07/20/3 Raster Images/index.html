@@ -18,7 +18,7 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-  <title>test article - DaojiChezhi&#39;s Blog</title>
+  <title>Fundamental of CG研习：Chapter3 Raster Images - DaojiChezhi&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="test article">
+            <span class="h2" id="subtitle" title="Fundamental of CG研习：Chapter3 Raster Images">
               
             </span>
 
@@ -173,7 +173,7 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-20 15:07" pubdate>
+      <time datetime="2021-07-20 15:37" pubdate>
         2021年7月20日 下午
       </time>
     </span>
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      0 字
+      2.3k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      25
        分钟
     </span>
   
@@ -233,10 +233,55 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">test article</h1>
+            <h1 style="display: none">Fundamental of CG研习：Chapter3 Raster Images</h1>
             
             <div class="markdown-body">
-              
+              <h1 id="3-Raster-Images"><a href="#3-Raster-Images" class="headerlink" title="3 Raster Images"></a>3 Raster Images</h1><p>章名为光栅图像。</p>
+<p>为了在显示屏上显示图像，计算机需要将图像处理为以像素点表示的数据，即光栅化。每个像素可以发出红绿蓝光以合成为任意颜色。</p>
+<p>而电脑处理的图像通常分为两类，raster image与vector image。在理想的情况下，raster image中的每一个像素点可以对应显示屏上的每一个像素点，但在大多数情况下，无法做到这种一一对应的关系。vector image的好处则在于支持任意尺度的缩放而不受到影响，这种图像以线段，曲线，形状进行描述，存在的问题是，要将这种较为抽象的图像显示出来，需要先经过光栅化的过程，这也是本章的主要论题。</p>
+<h2 id="3-1-Raster-Device"><a href="#3-1-Raster-Device" class="headerlink" title="3.1 Raster Device"></a>3.1 Raster Device</h2><p>在讨论光栅化图像之前，先来看看如何显示图像的设备。通常的显示设备可以分为LCD(liquid crystal display，液晶显示)与LED(light-emitting diode，发光二极管)，二者的详细区别在下节叙述：</p>
+<h3 id="3-1-1"><a href="#3-1-1" class="headerlink" title="3.1.1"></a>3.1.1</h3><p>当今的显示器大多基于固定尺寸的像素阵列，如电视与数码放映机。而这些显示器又大多分为两类：</p>
+<ul>
+<li><p>emissive displays</p>
+<p>  使用像素本身发射光线(LED)。</p>
+</li>
+<li><p>transmissive displays</p>
+<p>  像素本身并不发光，而是控制通过其的光线能量(LCD)。</p>
+</li>
+</ul>
+<p>LCD的原理比较有意思，而LED的原理较为容易理解。对LED来说，一个像素的光线由三个子像素发射，而三个子像素的尺寸很小，肉眼不可见，通过通过二极管的电流大小，可以控制每种颜色光的强度，经过混合就得到了多种颜色。而LCD的是通过液晶的特性，通过电压改变液晶朝向，再改变通过光的偏振方向，从而改变通过光的强度，做到对每种原色光的强度控制：</p>
+<p><img src="3%20Raster%20Images%200edd47e975904e4f8e4268f0d1f4ebf3/Untitled.png" srcset="/myBlog.github.io/img/loading.gif" lazyload alt="3%20Raster%20Images%200edd47e975904e4f8e4268f0d1f4ebf3/Untitled.png"></p>
+<h3 id="3-1-2-Hardcopy-Devices"><a href="#3-1-2-Hardcopy-Devices" class="headerlink" title="3.1.2 Hardcopy Devices"></a>3.1.2 Hardcopy Devices</h3><p>这章并没有仔细看，随便讲讲，没什么意思。讲的是印刷设备的原理。对印刷设备而言，ppi可以表示像素的密度，而dpi(dots per inch)则表示一个黑白打印机，即像素点非黑即白的点密度。</p>
+<h3 id="3-1-3-Input-Devices"><a href="#3-1-3-Input-Devices" class="headerlink" title="3.1.3 Input Devices"></a>3.1.3 Input Devices</h3><p>图像的输入设备当属相机。</p>
+<h2 id="3-2-Images-Pixels-and-Geometry"><a href="#3-2-Images-Pixels-and-Geometry" class="headerlink" title="3.2 Images, Pixels, and Geometry"></a>3.2 Images, Pixels, and Geometry</h2><p>我们可以将一个待显示的图像抽象为函数：</p>
+<script type="math/tex; mode=display">I(x,y): R \rightarrow V</script><p>V表示像素的可能值集合，而R是图像的显示范围。对于彩色图像而言，V是一个三维向量，分别代表红，绿，蓝强度。</p>
+<p>像素的坐标与屏幕的对应关系通常由下图表示：</p>
+<p><img src="3%20Raster%20Images%200edd47e975904e4f8e4268f0d1f4ebf3/Untitled%201.png" srcset="/myBlog.github.io/img/loading.gif" lazyload alt="3%20Raster%20Images%200edd47e975904e4f8e4268f0d1f4ebf3/Untitled%201.png"></p>
+<p>若一幅图像的尺寸为$(n_x, n_y)$，这里的尺寸意义为像素点个数，那么该图像的显示范围可以表示为下式：</p>
+<script type="math/tex; mode=display">R = [-0.5, n_x-0.5]\times[-0.5, n_y-0.5]</script><h3 id="3-2-1-Pixel-Values"><a href="#3-2-1-Pixel-Values" class="headerlink" title="3.2.1 Pixel Values"></a>3.2.1 Pixel Values</h3><p>本章讨论像素值的储存方式。假设每个像素的值都由三个32位浮点数表示，那么图像的尺寸将非常巨大，我们需要减少这一数值。首先，由于设备的限制，我们当然不可能将像素的光强设为无限大，通常，我们取其值域为[0,1]。对于一个8bit图像，通常的做法是储存为0, 1/255…, 254/255, 1。</p>
+<p>以浮点数的方式储存的图像通常称为high dynamic range images(HDR)，这种图像的值域较宽，与之相对的是以整数形式存储的图像，称为LDR images。无论何种图像，都希望可以做到减少存储所需要的内存空间。</p>
+<p>以有限值域的方式存储图像所导致的第一个问题是clipping，即剪切。当需要的光强太高，例如拍摄太阳时，所有亮度大于我们所设定的最大像素亮度值的输入值都会被设为最大值，这造成了细节上的损失。同时，以有限精度编码图像会导致quantization artifacts，即图像中出现明显的分层现象，这是因为图像的编码方式或许精度过低，无法反映亮度的细微渐变变化。</p>
+<h3 id="3-2-2-Monitor-Intensities-and-Gamma"><a href="#3-2-2-Monitor-Intensities-and-Gamma" class="headerlink" title="3.2.2 Monitor Intensities and Gamma"></a>3.2.2 Monitor Intensities and Gamma</h3><p>本章主要讨论图像的输入值如何经过处理后被显示在具体设备上的过程。</p>
+<p>首先明确一点，我们需要达到的目的是什么？假设图像的输入范围为0到1，输入为0时，我们希望设备完全不发光，而输入为1时，我们希望设备的三个通道均以最大亮度显示，以显示最亮的白色，更远一些，当输入值为0.5时呢？理所当然地，我们希望此时设备所发射的光线能量为值为1时的恰好一半。</p>
+<p>当然，此处我们暂且不论人眼对光的感知能力与光的能量并不成线性关系，因为这会使我们的讨论变得复杂而没有暂时必要。</p>
+<p>问题在于，我们的设备输出能量与其接受的输入值对应关系时非线性的！以0.5输入为例，我们的输出能量可能仅有0.25，输入值与输出能量之间的关系可以用下式模拟：</p>
+<script type="math/tex; mode=display">displayed\ intensity = (maximum\ intensity)a^\gamma</script><p>a即输入值，当a为0/1时，显示能量依然是与输入值对应的，对其他输入值则并非如此。为了了解输入与输出能量的关系，我们需要求出公式中的$\gamma$，在这里，有一种巧妙的方式解决这一问题：</p>
+<p><img src="3%20Raster%20Images%200edd47e975904e4f8e4268f0d1f4ebf3/Untitled%202.png" srcset="/myBlog.github.io/img/loading.gif" lazyload alt="3%20Raster%20Images%200edd47e975904e4f8e4268f0d1f4ebf3/Untitled%202.png"></p>
+<p>公式中$\gamma$的求解需要其余三个量已知！我们需要找到当设备的输出能量恰好等于最大能量的一半时，输入值a到底是多少。如果能够得知此时的a值，那么可以解得：</p>
+<script type="math/tex; mode=display">\gamma = \frac{ln 0.5}{ln a}</script><p>可是如何调节设备使其输出的能量恰好为最大能量的一半呢？看到上图应该就会有答案。在左边，我们以棋盘的方式放置黑白像素，以使其比例为1：1，当像素点够密时，其呈现的外观与一副均匀的灰色图像无异，此时，我们需要用户手动调节右边图像的输入值，以使两边图像的亮度一致，此时，我们可以认为右边图像的输入值恰好使设备的输出为最大能量的一半！</p>
+<p>这就是游戏中常常遇到的gamma亮度调节，这一方法用于求出设备的这一属性，被运用得相当广泛。通过求得$\gamma$值，我们对于这台设备的输入输出特性已然掌握，通过调节输入值，我们就可以使输出的能量与我们想要的效果达到一致！而非产生公式所描述的偏差：</p>
+<script type="math/tex; mode=display">a' = a^{\frac{1}{\gamma}}</script><p>每当我们要输入a值给设备时，我们将其替换为a’，通过这种方式，得到设备的输出能量：</p>
+<script type="math/tex; mode=display">displayed\ intensity = (maximum\ intensity)(a^{\frac{1}{\gamma}})^\gamma = a(maximum\ intensity)</script><p>这就是我们想要的效果！</p>
+<h2 id="3-3-RGB-Color"><a href="#3-3-RGB-Color" class="headerlink" title="3.3 RGB Color"></a>3.3 RGB Color</h2><p>以RGB表示的光混合方法是一种additive manner，这种混合方法是建立在我们的显示设备是依靠自发光而非反射光来进行显示的基础之上的。与之相对的混合方法为subtractive manner，其三原色为红黄蓝，印刷制品本身并不发光，故其为减法。</p>
+<p>在以RGB方式表示色彩时，通常采用的方法是使用一个字节即0-255表示一个分量值，同样地，每个分量都会遇到伽马校正，即上界所介绍的问题，而每个分量都可以以相同的方法进行校正。</p>
+<h2 id="3-4-Alpha-Compositing"><a href="#3-4-Alpha-Compositing" class="headerlink" title="3.4 Alpha Compositing"></a>3.4 Alpha Compositing</h2><p>本节考虑如何处理半透明物体如玻璃等,同样地, 当前景与后景分别占到一个像素的一部分时, 也需要考虑两部分混合的问题.</p>
+<p>自然地, 我们考虑颜色为$c_f$的前景物体所占单个像素比例为$\alpha$时, 有该像素颜色为:</p>
+<script type="math/tex; mode=display">c = \alpha c_f + (1-\alpha)c_b</script><p>而对于一些半透明的图像, 我们需要利用alpha通道去存储这一像素的透明度, alpha通道和RGB三通道共同描述了一个RGBA图像:</p>
+<p><img src="3%20Raster%20Images%200edd47e975904e4f8e4268f0d1f4ebf3/Untitled%203.png" srcset="/myBlog.github.io/img/loading.gif" lazyload alt="3%20Raster%20Images%200edd47e975904e4f8e4268f0d1f4ebf3/Untitled%203.png"></p>
+<h3 id="3-4-1-Image-Storage"><a href="#3-4-1-Image-Storage" class="headerlink" title="3.4.1 Image Storage"></a>3.4.1 Image Storage</h3><p>要完全地存储某一图像的全部信息, 例如说, RGB图像的每个通道都使用8bit去描述, 根据图像的像素数量我们当然可以轻松计算这一图像的大小, 往往比较大, 这就需要进行压缩, 分lossless即无损与lossy有损两种方式. 常见的jpeg格式为有损的, 而tiff, ppm, png则是无损的格式.</p>
+<h2 id="一个有趣的问题"><a href="#一个有趣的问题" class="headerlink" title="一个有趣的问题"></a>一个有趣的问题</h2><p>为什么我们不在制造显示器时即调试好设备, 使其在接收到输入时线性地输出能量, 而是需要用户进行手动调节?</p>
+<p>看不懂书上的解释, mark先啦.</p>
+
             </div>
             <hr>
             <div>
@@ -256,9 +301,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/myBlog.github.io/2021/07/20/test-article2/">
+                      <a href="/myBlog.github.io/2021/07/20/2%20Miscellaneous%20Math/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">test article2</span>
+                        <span class="hidden-mobile">Fundamental of CG研习：Chapter2 Miscellaneous Math</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -266,8 +311,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/myBlog.github.io/2021/04/30/article-title/">
-                        <span class="hidden-mobile">article title</span>
+                      <a href="/myBlog.github.io/2021/07/20/4%20Ray%20Tracing/">
+                        <span class="hidden-mobile">Fundamental of CG研习：Chapter4 Ray Tracing</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
